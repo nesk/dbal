@@ -408,13 +408,18 @@ class MySqlSchemaManagerTest extends SchemaManagerFunctionalTestCase
 
     public function testJsonColumnType() : void
     {
+        $platform = $this->schemaManager->getDatabasePlatform();
+
         $table = new Table('test_mysql_json');
         $table->addColumn('col_json', 'json');
         $this->schemaManager->dropAndCreateTable($table);
 
         $columns = $this->schemaManager->listTableColumns('test_mysql_json');
 
-        self::assertSame(Types::JSON, $columns['col_json']->getType()->getName());
+        self::assertSame(
+            $platform->getUnderlyingJsonTypeDeclarationSQL([]),
+            $columns['col_json']->getType()->getName()
+        );
     }
 
     public function testColumnDefaultCurrentTimestamp() : void

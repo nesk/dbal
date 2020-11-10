@@ -333,6 +333,21 @@ abstract class AbstractPlatform
     }
 
     /**
+     * Returns the real type to which the JSON type is aliased.
+     *
+     * Some platforms only support the JSON type as an alias, using it to create
+     * a column will create a column with another type.
+     *
+     * @param mixed[] $field
+     *
+     * @return string
+     */
+    public function getUnderlyingJsonTypeDeclarationSQL(array $field)
+    {
+        return $this->getJsonTypeDeclarationSQL($field);
+    }
+
+    /**
      * @param int  $length
      * @param bool $fixed
      *
